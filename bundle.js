@@ -148,7 +148,7 @@ game.on('start', function(){
 });
 
 game.on('update', function(interval){
-	//console.log(map, camera)
+	//console.log(map, camera);
 });
 
 game.on('draw', function(context){
@@ -225,12 +225,12 @@ Map.prototype.generate = function(ticks){
   this.image.src = context.canvas.toDataURL("image/png");
 
   context = null;
-}
+};
 
 // draw the map adjusted to camera
 Map.prototype.draw = function(context, camera) {
   context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -camera.position.x, -camera.position.y, this.image.width, this.image.height);
-}
+};
 
 },{"./util/math":13}],4:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
@@ -1033,9 +1033,9 @@ function Player(options){
     c.save();
     c.fillStyle = self.color;
     c.fillRect(
-      self.position.x - this.camera.position.x, 
-      self.position.y - this.camera.position.y, 
-      self.size.x, 
+      self.position.x - this.camera.position.x,
+      self.position.y - this.camera.position.y,
+      self.size.x,
       self.size.y
     );
     c.restore();
