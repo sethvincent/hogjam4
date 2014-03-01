@@ -1,0 +1,25 @@
+{
+  "name": "hogjam4",
+  "description": "the baby",
+  "version": "0.0.0",
+  "repository": {
+    "url": "git://github.com/sethvincent/hogjam4.git"
+  },
+  "main": "game.js",
+  "scripts": {
+    "test": "",
+    "start": "beefy game.js:bundle.js --live"
+  },
+  "dependencies": {
+    "crtrdg-scene": "^0.1.0",
+    "crtrdg-gameloop": "^0.2.0",
+    "crtrdg-mouse": "0.0.3",
+    "crtrdg-keyboard": "0.0.2",
+    "crtrdg-entity": "^0.2.0",
+    "inherits": "^2.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^3.31.2",
+    "beefy": "^1.1.0"
+  }
+}
