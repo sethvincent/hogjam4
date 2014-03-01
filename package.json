@@ -18,7 +18,9 @@
     "crtrdg-mouse": "0.0.3",
     "crtrdg-keyboard": "0.0.2",
     "crtrdg-entity": "^0.2.0",
-    "inherits": "^2.0.1"
+    "inherits": "^2.0.1",
+    "preload": "git://github.com/sethvincent/preload",
+    "imagepreloader": "git://github.com/sethvincent/node-imagepreloader"
   },
   "devDependencies": {
     "browserify": "^3.31.2",

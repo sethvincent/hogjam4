@@ -1,3 +1,4 @@
+var Preloader = require('imagepreloader');
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
@@ -32,6 +33,16 @@ game.on('pause', function(){
 game.on('resume', function(){
   console.log('resumed');
 });
+
+var preload = new Preloader;
+    preload
+        .add('/images/zombie.jpg')
+        .success(function(images){ 
+          console.log(images)
+          player.image = images['zombie.jpg'];
+        })
+        .error(function(err){ console.log(error) })
+        .done();
 
 
 /*

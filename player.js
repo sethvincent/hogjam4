@@ -19,7 +19,6 @@ function Player(options){
   this.friction = 0.4;
   this.health = 100;
   this.strength = 5;
-  this.color = '#fff';
   this.visible = true;
   this.points = 0;
 
@@ -33,13 +32,12 @@ function Player(options){
 
   this.on('draw', function(c){
     c.save();
-    c.fillStyle = self.color;
-    c.fillRect(
-      self.position.x - this.camera.position.x, 
-      self.position.y - this.camera.position.y, 
-      self.size.x, 
-      self.size.y
-    );
+    c.drawImage(
+      self.image, 
+      self.position.x - self.camera.position.x,
+      self.position.y - self.camera.position.y, 
+      self.image.width, 
+      self.image.height);
     c.restore();
   });
 }
