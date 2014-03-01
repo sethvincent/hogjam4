@@ -15,7 +15,7 @@ function Player(options){
   this.velocity = { x: 0, y: 0 };
   this.position = options.position;
 
-  this.speed = 8;
+  this.speed = 18;
   this.friction = 0.4;
   this.health = 100;
   this.strength = 5;
@@ -26,13 +26,20 @@ function Player(options){
   this.on('update', function(interval){
     self.input(self.keysDown);
     self.move();
+    self.velocity.x *= self.friction;
+    self.velocity.y *= self.friction;
     self.boundaries();
   });
 
   this.on('draw', function(c){
     c.save();
     c.fillStyle = self.color;
-    c.fillRect(self.position.x, self.position.y, self.size.x, self.size.y);
+    c.fillRect(
+      self.position.x - this.camera.position.x, 
+      self.position.y - this.camera.position.y, 
+      self.size.x, 
+      self.size.y
+    );
     c.restore();
   });
 }
