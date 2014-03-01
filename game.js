@@ -18,7 +18,7 @@ game.on('start', function(){
 });
 
 game.on('update', function(interval){
-	//console.log(map, camera)
+	//console.log(map, camera);
 });
 
 game.on('draw', function(context){

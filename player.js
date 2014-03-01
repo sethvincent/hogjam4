@@ -35,9 +35,9 @@ function Player(options){
     c.save();
     c.fillStyle = self.color;
     c.fillRect(
-      self.position.x - this.camera.position.x, 
-      self.position.y - this.camera.position.y, 
-      self.size.x, 
+      self.position.x - this.camera.position.x,
+      self.position.y - this.camera.position.y,
+      self.size.x,
       self.size.y
     );
     c.restore();
