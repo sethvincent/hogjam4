@@ -27,7 +27,6 @@ function Player(options){
     self.input(self.keysDown);
     self.move();
     self.boundaries();
-    console.log('player updating')
   });
 
   this.on('draw', function(c){

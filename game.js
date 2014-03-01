@@ -43,7 +43,9 @@ var player = new Player({
   keysDown: keysDown,
   camera: camera,
   position: { x: 100, y: 100 }
-});
+}).addTo(game);
+
+console.log(game)
 
 
 /*
