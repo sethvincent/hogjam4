@@ -8,6 +8,8 @@
   "main": "game.js",
   "scripts": {
     "test": "",
+    "bundle": "browserify game.js -o bundle.js",
+    "deploy": "npm run bundle && git add bundle.js && git commit -m 'update bundle.js' && git push origin gh-pages",
     "start": "beefy game.js:bundle.js --live"
   },
   "dependencies": {

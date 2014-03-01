@@ -45,8 +45,6 @@ var player = new Player({
   position: { x: 100, y: 100 }
 }).addTo(game);
 
-console.log(game)
-
 
 /*
 *
