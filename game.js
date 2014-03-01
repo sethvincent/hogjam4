@@ -19,7 +19,7 @@ game.on('start', function(){
 });
 
 game.on('update', function(interval){
-	//console.log(map, camera)
+	//console.log(map, camera);
 });
 
 game.on('draw', function(context){
@@ -35,14 +35,14 @@ game.on('resume', function(){
 });
 
 var preload = new Preloader;
-    preload
-        .add('/images/zombie.jpg')
-        .success(function(images){ 
-          console.log(images)
-          player.image = images['zombie.jpg'];
-        })
-        .error(function(err){ console.log(error) })
-        .done();
+preload
+    .add('/images/zombie.jpg')
+    .success(function(images){ 
+      console.log(images)
+      player.image = images['zombie.jpg'];
+    })
+    .error(function(err){ console.log(error) })
+    .done();
 
 
 /*

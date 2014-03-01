@@ -30,9 +30,9 @@ Map.prototype.generate = function(ticks){
   this.image.src = context.canvas.toDataURL("image/png");
 
   context = null;
-}
+};
 
 // draw the map adjusted to camera
 Map.prototype.draw = function(context, camera) {
   context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -camera.position.x, -camera.position.y, this.image.width, this.image.height);
-}
+};

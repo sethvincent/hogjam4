@@ -33,21 +33,21 @@ function Camera(options){
   
   this.viewport = options.viewport;
     
-  this.viewportRect = new Rectangle(this.position.x, this.position.y, this.viewport.width, this.viewport.height);       
+  this.viewportRect = new Rectangle(this.position.x, this.position.y, this.viewport.width, this.viewport.height);
             
   this.worldRect = new Rectangle(this.position.x, this.position.y, this.map.width, this.map.height);
 
   this.game.on('update', function(){
     self.update();
-  })
+  });
 }
 
 Camera.prototype.update = function(){
   var following = this.following;
   var followPoint = this.followPoint;
 
-  if (following != null){   
-    if (followPoint.x !== null){  
+  if (following !== null){
+    if (followPoint.x !== null){
       
       if(following.position.x - this.position.x + this.deadZone.x > this.viewport.width){
         this.position.x = following.position.x - (this.viewport.width - this.deadZone.x);
@@ -66,8 +66,8 @@ Camera.prototype.update = function(){
       else if(following.position.y - this.deadZone.y < this.position.y) {
         this.position.y = following.position.y - this.deadZone.y;
       }
-    }           
-  }   
+    }
+  }
 
   this.viewportRect.set(this.position.x, this.position.y, this.viewport.width, this.viewport.height);
 
@@ -77,7 +77,7 @@ Camera.prototype.update = function(){
       this.position.x = this.worldRect.left;
     }
 
-    if(this.viewportRect.top < this.worldRect.top){       
+    if(this.viewportRect.top < this.worldRect.top){
       this.position.y = this.worldRect.top;
     }
 
@@ -90,8 +90,8 @@ Camera.prototype.update = function(){
     }
 
   }
-  
-} 
+
+};
 
 function Rectangle(left, top, width, height){
   this.left = left || 0;
@@ -104,25 +104,25 @@ Rectangle.prototype.set = function(left, top, width, height){
   this.left = left;
   this.top = top;
   this.width = width || this.width;
-  this.height = height || this.height
+  this.height = height || this.height;
   this.right = this.left + this.width;
   this.bottom = this.top + this.height;
-}
+};
 
 Rectangle.prototype.within = function(rectangle) {
   return (
-    rectangle.left <= this.left && 
+    rectangle.left <= this.left &&
     rectangle.right >= this.right &&
-    rectangle.top <= this.top && 
+    rectangle.top <= this.top &&
     rectangle.bottom >= this.bottom
   );
-}   
+};
 
 Rectangle.prototype.overlaps = function(rectangle) {
   return (
-    this.left < rectangle.right && 
-    this.right > rectangle.left && 
+    this.left < rectangle.right &&
+    this.right > rectangle.left &&
     this.top < rectangle.bottom &&
     this.bottom > rectangle.top
   );
-}
+};
