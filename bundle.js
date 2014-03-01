@@ -34,21 +34,21 @@ function Camera(options){
   
   this.viewport = options.viewport;
     
-  this.viewportRect = new Rectangle(this.position.x, this.position.y, this.viewport.width, this.viewport.height);       
+  this.viewportRect = new Rectangle(this.position.x, this.position.y, this.viewport.width, this.viewport.height);
             
   this.worldRect = new Rectangle(this.position.x, this.position.y, this.map.width, this.map.height);
 
   this.game.on('update', function(){
     self.update();
-  })
+  });
 }
 
 Camera.prototype.update = function(){
   var following = this.following;
   var followPoint = this.followPoint;
 
-  if (following != null){   
-    if (followPoint.x !== null){  
+  if (following !== null){
+    if (followPoint.x !== null){
       
       if(following.position.x - this.position.x + this.deadZone.x > this.viewport.width){
         this.position.x = following.position.x - (this.viewport.width - this.deadZone.x);
@@ -67,8 +67,8 @@ Camera.prototype.update = function(){
       else if(following.position.y - this.deadZone.y < this.position.y) {
         this.position.y = following.position.y - this.deadZone.y;
       }
-    }           
-  }   
+    }
+  }
 
   this.viewportRect.set(this.position.x, this.position.y, this.viewport.width, this.viewport.height);
 
@@ -78,7 +78,7 @@ Camera.prototype.update = function(){
       this.position.x = this.worldRect.left;
     }
 
-    if(this.viewportRect.top < this.worldRect.top){       
+    if(this.viewportRect.top < this.worldRect.top){
       this.position.y = this.worldRect.top;
     }
 
@@ -91,8 +91,8 @@ Camera.prototype.update = function(){
     }
 
   }
-  
-} 
+
+};
 
 function Rectangle(left, top, width, height){
   this.left = left || 0;
@@ -105,28 +105,28 @@ Rectangle.prototype.set = function(left, top, width, height){
   this.left = left;
   this.top = top;
   this.width = width || this.width;
-  this.height = height || this.height
+  this.height = height || this.height;
   this.right = this.left + this.width;
   this.bottom = this.top + this.height;
-}
+};
 
 Rectangle.prototype.within = function(rectangle) {
   return (
-    rectangle.left <= this.left && 
+    rectangle.left <= this.left &&
     rectangle.right >= this.right &&
-    rectangle.top <= this.top && 
+    rectangle.top <= this.top &&
     rectangle.bottom >= this.bottom
   );
-}   
+};
 
 Rectangle.prototype.overlaps = function(rectangle) {
   return (
-    this.left < rectangle.right && 
-    this.right > rectangle.left && 
+    this.left < rectangle.right &&
+    this.right > rectangle.left &&
     this.top < rectangle.bottom &&
     this.bottom > rectangle.top
   );
-}
+};
 },{}],2:[function(require,module,exports){
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
@@ -192,7 +192,7 @@ var camera = new Camera({
   viewport: { width: game.width, height: game.height },
   map: map
 });
-},{"./camera":1,"./map":3,"./player":16,"crtrdg-gameloop":7,"crtrdg-keyboard":10,"crtrdg-mouse":13}],3:[function(require,module,exports){
+},{"./camera":1,"./map":3,"./player":12,"crtrdg-gameloop":6,"crtrdg-keyboard":8,"crtrdg-mouse":10}],3:[function(require,module,exports){
 var randomRGBA = require('./util/math').randomRGBA;
 
 module.exports = Map;
@@ -232,7 +232,7 @@ Map.prototype.draw = function(context, camera) {
   context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -camera.position.x, -camera.position.y, this.image.width, this.image.height);
 }
 
-},{"./util/math":17}],4:[function(require,module,exports){
+},{"./util/math":13}],4:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -560,6 +560,7 @@ Entity.prototype.addTo = function(game){
 
 Entity.prototype.initializeListeners = function(){
   var self = this;
+  
   this.findEntity(this, function(exists, entities, index){
     if (exists){
       self.game.on('update', function(interval){
@@ -603,32 +604,7 @@ Entity.prototype.findEntity = function(entity, callback){
   callback(exists, entities, index);
 };
 
-},{"events":4,"inherits":6}],6:[function(require,module,exports){
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-},{}],7:[function(require,module,exports){
+},{"events":4,"inherits":11}],6:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var requestAnimationFrame = require('raf');
 var inherits = require('inherits');
@@ -705,9 +681,7 @@ Game.prototype.draw = function(){
   this.emit('draw', this.context);
   this.emit('draw-foreground', this.context);
 };
-},{"events":4,"inherits":8,"raf":9}],8:[function(require,module,exports){
-module.exports=require(6)
-},{}],9:[function(require,module,exports){
+},{"events":4,"inherits":11,"raf":7}],7:[function(require,module,exports){
 module.exports = raf
 
 var EE = require('events').EventEmitter
@@ -760,7 +734,7 @@ raf.polyfill = _raf
 raf.now = now
 
 
-},{"events":4}],10:[function(require,module,exports){
+},{"events":4}],8:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var vkey = require('vkey');
@@ -791,9 +765,7 @@ Keyboard.prototype.initializeListeners = function(){
     delete self.keysDown[vkey[e.keyCode]];
   }, false);
 };
-},{"events":4,"inherits":11,"vkey":12}],11:[function(require,module,exports){
-module.exports=require(6)
-},{}],12:[function(require,module,exports){
+},{"events":4,"inherits":11,"vkey":9}],9:[function(require,module,exports){
 var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
   , isOSX = /OS X/.test(ua)
   , isOpera = /Opera/.test(ua)
@@ -931,7 +903,7 @@ for(i = 112; i < 136; ++i) {
   output[i] = 'F'+(i-111)
 }
 
-},{}],13:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -998,11 +970,32 @@ Mouse.prototype.calculateOffset = function(e, callback){
   callback(location);
 }
 
-},{"events":4,"inherits":14}],14:[function(require,module,exports){
-module.exports=require(6)
-},{}],15:[function(require,module,exports){
-module.exports=require(6)
-},{}],16:[function(require,module,exports){
+},{"events":4,"inherits":11}],11:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],12:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 
@@ -1096,7 +1089,7 @@ Player.prototype.input = function(){
     this.direction = "right";
   }
 };
-},{"crtrdg-entity":5,"inherits":15}],17:[function(require,module,exports){
+},{"crtrdg-entity":5,"inherits":11}],13:[function(require,module,exports){
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
