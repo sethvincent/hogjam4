@@ -51,10 +51,4 @@ Sprite.prototype.draw = function(context){
   	this.frameWidth, 
   	this.image.height
   );
-      //c.drawImage(
-    //  self.image, 
-    //  self.position.x - self.camera.position.x,
-    //  self.position.y - self.camera.position.y, 
-    //  self.image.width, 
-    //  self.image.height);
 };
