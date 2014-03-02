@@ -207,6 +207,7 @@ var camera = new Camera({
 var npc1 = new NPC({
   game: game,
   map: map,
+  camera: camera,
   position: { x: 100, y: 200 },
   path: 1
 }).addTo(game);
@@ -245,12 +246,12 @@ preload
       fps: 16
     });
 
-    //npc1.image = new Sprite({
-    //  entity: npc1,
-    //  image: images['tan-baby.png'],
-    //  frames: 4,
-    //  fps: 16
-    //});
+    npc1.image = new Sprite({
+      entity: npc1,
+      image: images['tan-baby.png'],
+      frames: 4,
+      fps: 16
+    });
 
     game.start();
     console.log(images)
@@ -1181,6 +1182,7 @@ function NPC(options) {
 
   this.game = options.game;
   this.map = options.map;
+  this.camera = options.camera;
 
   this.size = {
     x: 50,
