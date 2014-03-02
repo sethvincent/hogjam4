@@ -11,7 +11,7 @@ function Player(options){
   this.keysDown = options.keysDown;
   this.camera = options.camera;
 
-  this.size = { x: 16, y: 16 };
+  this.size = { x: 64, y: 64 };
   this.velocity = { x: 0, y: 0 };
   this.position = options.position;
 
@@ -21,6 +21,8 @@ function Player(options){
   this.strength = 5;
   this.visible = true;
   this.points = 0;
+
+
 
   this.on('update', function(interval){
     self.input(self.keysDown);
@@ -32,12 +34,13 @@ function Player(options){
 
   this.on('draw', function(c){
     c.save();
-    c.drawImage(
-      self.image, 
-      self.position.x - self.camera.position.x,
-      self.position.y - self.camera.position.y, 
-      self.image.width, 
-      self.image.height);
+    self.image.draw(c)
+    //c.drawImage(
+    //  self.image, 
+    //  self.position.x - self.camera.position.x,
+    //  self.position.y - self.camera.position.y, 
+    //  self.image.width, 
+    //  self.image.height);
     c.restore();
   });
 }

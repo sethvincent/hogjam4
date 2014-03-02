@@ -4,6 +4,7 @@ var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
 
 var Player = require('./player');
+var Sprite = require('./util/sprite');
 var Camera = require('./camera');
 var Map = require('./map');
 
@@ -36,13 +37,19 @@ game.on('resume', function(){
 
 var preload = new Preloader;
 preload
-    .add('/images/zombie.jpg')
-    .success(function(images){ 
-      console.log(images)
-      player.image = images['zombie.jpg'];
-    })
-    .error(function(err){ console.log(error) })
-    .done();
+  .add('/images/the-baby.png')
+  .success(function(images){ 
+    player.image = new Sprite({
+      entity: player,
+      image: images['the-baby.png'],
+      frames: 4,
+      fps: 16
+    });
+    game.start();
+    console.log(images)
+  })
+  .error(function(err){ console.log(error) })
+  .done();
 
 
 /*
