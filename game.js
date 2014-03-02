@@ -4,6 +4,8 @@ var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
 
 var Player = require('./player');
+var NPC = require('./npc');
+
 var Sprite = require('./util/sprite');
 var Camera = require('./camera');
 var Map = require('./map');
@@ -80,3 +82,37 @@ var camera = new Camera({
   viewport: { width: game.width, height: game.height },
   map: map
 });
+
+/*
+* THE NPCs i.e. non-player characters
+* TBD Possibly an array of NPCs
+*/
+
+// Why pass in game to npc1?
+// Test creating 3 diff NPCs with each path option, horizontal, vert and static
+var npc1 = new NPC({
+  game: game,
+  map: map,
+  position: { x: 100, y: 200 },
+  path: 1
+}).addTo(game);
+
+npc1.move();
+
+var npc2 = new NPC({
+  game: game,
+  map: map,
+  position: { x: 250, y: 250 },
+  path: 0
+}).addTo(game);
+
+npc2.move();
+
+var npc3 = new NPC({
+  game: game,
+  map: map,
+  position: { x: 130, y: 300 },
+  path: 2
+}).addTo(game);
+
+npc3.move();
