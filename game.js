@@ -24,6 +24,8 @@ var loading = document.getElementById('loading');
 
 // Player Properties
 var score = 0;
+var scoreElement = document.getElementById('points');
+var LEADING_ZEROS = '0000000000';
 
 // NPC Properties
 var npcArray = [];
@@ -36,6 +38,9 @@ mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
+  /* reset score onload */
+  score = 0;
+  scoreElement.innerText = LEADING_ZEROS;
   loading.style.display = 'none';
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
@@ -103,6 +108,7 @@ player.on('update', function(){
     if (player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
       // add to player score
       score +=  NPC_POINTS_VALUE;
+      scoreElement.innerText = new String(LEADING_ZEROS + score).slice(-10);
       console.log('current score: ' + score);
       npcArray[i].zombie = true;
       player.attack();
