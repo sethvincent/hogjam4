@@ -96,15 +96,15 @@ player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
     if (player.touches(npcArray[i]) && !npcArray[i].zombie){
       npcArray[i].zombie = true;
-      player.emit('attack');
+      player.attack();
     }
   }
 });
 
-player.on('attack', function(){
+player.attack =  function(){
   zombieNoise.load();
   zombieNoise.play();
-});
+};
 
 
 /*
