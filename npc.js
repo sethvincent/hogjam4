@@ -56,8 +56,8 @@ function NPC(options) {
   this.on('draw', function(c) {
     c.save();
 
-    if (this.image){
-      this.image.draw(c);
+    if (self.image){
+      self.image.draw(c);
     }
 
     else {
