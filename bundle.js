@@ -167,7 +167,7 @@ game.on('resume', function(){
 
 var preload = new Preloader;
 preload
-  .add('/images/the-baby.png')
+  .add('images/the-baby.png')
   .success(function(images){ 
     player.image = new Sprite({
       entity: player,
@@ -1307,12 +1307,6 @@ Sprite.prototype.draw = function(context){
   	this.frameWidth, 
   	this.image.height
   );
-      //c.drawImage(
-    //  self.image, 
-    //  self.position.x - self.camera.position.x,
-    //  self.position.y - self.camera.position.y, 
-    //  self.image.width, 
-    //  self.image.height);
 };
 
 },{"tic":17}]},{},[2])
