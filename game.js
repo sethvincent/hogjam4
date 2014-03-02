@@ -1,4 +1,6 @@
 var Preloader = require('imagepreloader');
+var buzz = require('buzz');
+
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
@@ -17,12 +19,11 @@ var mouse = new Mouse(game);
 var keyboard = new Keyboard(game);
 var keysDown = keyboard.keysDown;
 
-var imageArray = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
-
 mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
+  song.play();
 });
 
 game.on('update', function(interval){
@@ -39,6 +40,31 @@ game.on('pause', function(){
 
 game.on('resume', function(){
   console.log('resumed');
+});
+
+
+/*
+* Sounds
+*/
+
+game.musicPaused = false;
+var song = new buzz.sound('./sounds/song.mp3');
+
+var pauseMusic = document.getElementById('pause-music');
+var playMusic = document.getElementById('play-music');
+
+pauseMusic.addEventListener('click', function(e){
+  song.pause();
+  playMusic.style.display = 'initial';
+  pauseMusic.style.display = 'none';
+  game.musicPaused = true;
+});
+
+playMusic.addEventListener('click', function(e){
+  song.play().loop();
+  playMusic.style.display = 'none';
+  pauseMusic.style.display = 'initial';
+  game.musicPaused = false;
 });
 
 
@@ -106,11 +132,9 @@ preload
     var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
     for(var i = 0; i < 10; i++){
-      var baby = babySprites[MathUtil.randomInt(0,2)];
-      console.log(baby)
       npcArray[i].image = new Sprite({
         entity: npcArray[i],
-        image: images[baby],
+        image: images[babySprites[MathUtil.randomInt(0,2)]],
         frames: 4,
         fps: 12
       });

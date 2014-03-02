@@ -22,8 +22,6 @@ function Player(options){
   this.visible = true;
   this.points = 0;
 
-
-
   this.on('update', function(interval){
     self.input(self.keysDown);
     self.move();
@@ -35,12 +33,6 @@ function Player(options){
   this.on('draw', function(c){
     c.save();
     self.image.draw(c)
-    //c.drawImage(
-    //  self.image, 
-    //  self.position.x - self.camera.position.x,
-    //  self.position.y - self.camera.position.y, 
-    //  self.image.width, 
-    //  self.image.height);
     c.restore();
   });
 }

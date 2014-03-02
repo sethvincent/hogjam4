@@ -19,9 +19,9 @@
     "crtrdg-keyboard": "0.0.2",
     "crtrdg-entity": "^0.2.0",
     "inherits": "^2.0.1",
-    "preload": "git://github.com/sethvincent/preload",
     "imagepreloader": "git://github.com/sethvincent/node-imagepreloader",
-    "tic": "^0.2.1"
+    "tic": "^0.2.1",
+    "buzz": "git://github.com/jaysalvat/buzz"
   },
   "devDependencies": {
     "browserify": "^3.31.2",

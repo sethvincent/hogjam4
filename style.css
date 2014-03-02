@@ -1,1 +1,23 @@
 html, body { margin: 0px; padding: 0px; height: 100%; overflow: hidden; }
+
+a {
+  color: #3c80c3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:active,
+a:focus {
+  color: #1e4062;
+}
+
+#music {
+	position: absolute;
+	padding: 10px;
+	font-family: Helvetica, sans-serif;
+	color: #454545;
+	font-size: 12px;
+}
