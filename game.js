@@ -4,6 +4,7 @@ var buzz = require('buzz');
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
+var Scenes = require('crtrdg-scene');
 
 var Player = require('./player');
 var NPC = require('./npc');
@@ -190,7 +191,37 @@ preload
       });
     }
 
-    game.start();
   })
   .error(function(err){ console.log(error) })
   .done();
+
+
+/*
+* SCENES 
+*/
+
+var scenes = new Scenes(game);
+
+var menu = scenes.create({
+  name: 'menu'
+});
+
+menu.on('start', function(){
+
+});
+
+var play = scenes.create({
+  name: 'play'
+});
+
+play.on('start', function(){
+  game.start();
+});
+
+var over = scenes.create({
+  name: 'play'
+});
+
+over.on('start', function(){
+  
+});
