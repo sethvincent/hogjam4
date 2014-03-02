@@ -152,15 +152,24 @@ var keysDown = keyboard.keysDown;
 var uiElements = [].slice.call(document.querySelectorAll('.ui'));
 var loading = document.getElementById('loading');
 
+// Player Properties
+var score = 0;
+
+// NPC Properties
+var npcArray = [];
+var NUM_OF_NPCS = 10;
+// points per NPC 
+var NPC_POINTS_VALUE = 100;
+var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
+
 mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
   loading.style.display = 'none';
-  console.log(uiElements)
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
-  })
+  });
   song.play();
 });
 
@@ -181,13 +190,13 @@ game.on('resume', function(){
 });
 
 
-
 /*
 * Sounds
 */
 
 game.musicPaused = false;
 var song = new buzz.sound('./sounds/song.mp3');
+var zombieNoise = new buzz.sound('./sounds/zombie-noise.mp3');
 
 var pauseMusic = document.getElementById('pause-music');
 var playMusic = document.getElementById('play-music');
@@ -220,11 +229,21 @@ var player = new Player({
 
 player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
-    if (player.touches(npcArray[i])){
+    // if player touches npc and npc has not already turned into zombie
+    if (player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
+      // add to player score
+      score +=  NPC_POINTS_VALUE;
+      console.log('current score: ' + score);
       npcArray[i].zombie = true;
+      player.attack();
     }
   }
 });
+
+player.attack =  function(){
+  zombieNoise.load();
+  zombieNoise.play();
+};
 
 
 /*
@@ -244,14 +263,13 @@ var camera = new Camera({
   map: map
 });
 
+
 /*
 * THE NPCs i.e. non-player characters
 */
 
 // Why pass in game to npc objects?
-var npcArray = [];
-
-for(var i = 0; i < 10; i++){
+for(var i = 0; i < NUM_OF_NPCS; i++){
   npcArray[i] = new NPC({
     game: game,
     map: map,
@@ -276,8 +294,6 @@ preload
       frames: 4,
       fps: 16
     });
-
-    var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
     for(var i = 0; i < npcArray.length; i++){
       npcArray[i].image = new Sprite({
