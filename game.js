@@ -88,6 +88,14 @@ var player = new Player({
   position: { x: 100, y: 100 }
 }).addTo(game);
 
+player.on('update', function(){
+  for(var i=0; i<npcArray.length; i++){
+    if (player.touches(npcArray[i])){
+      npcArray[i].zombie = true;
+    }
+  }
+});
+
 
 /*
 *
@@ -141,11 +149,18 @@ preload
 
     var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
-    for(var i = 0; i < 10; i++){
+    for(var i = 0; i < npcArray.length; i++){
       npcArray[i].image = new Sprite({
         entity: npcArray[i],
         image: images[babySprites[MathUtil.randomInt(0,2)]],
         turnedImage: images['turned-baby.png'],
+        frames: 4,
+        fps: 12
+      });
+
+      npcArray[i].turnedImage = new Sprite({
+        entity: npcArray[i],
+        image: images['turned-baby.png'],
         frames: 4,
         fps: 12
       });

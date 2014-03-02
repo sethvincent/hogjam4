@@ -1,5 +1,6 @@
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
+var aabb = require('aabb-2d');
 
 module.exports = NPC;
 
@@ -12,14 +13,16 @@ function NPC(options) {
   this.camera = options.camera;
 
   this.size = {
-    x: 50,
-    y: 50
+    x: 64,
+    y: 64
   };
   this.velocity = {
     x: 0,
     y: 0
   };
   this.position = options.position;
+
+  this.setBoundingBox();
 
   /* Set boundary width/height for NPC to walk in between */
   this.boundary = {
@@ -38,6 +41,7 @@ function NPC(options) {
   this.points = 0;
   this.direction = "up";
   this.paths = ['horizontal', 'vertical', 'static'];
+  this.zombie = false;
 
   // Verify received valid path or default to horizontal
   if (options.path > -1 && options.path < 3) {
@@ -48,6 +52,7 @@ function NPC(options) {
 
   this.on('update', function(interval) {
     self.move();
+    self.setBoundingBox();
     self.velocity.x *= self.friction;
     self.velocity.y *= self.friction;
     self.boundaries();
@@ -56,7 +61,10 @@ function NPC(options) {
   this.on('draw', function(c) {
     c.save();
 
-    if (self.image){
+    if (self.zombie){
+      self.turnedImage.draw(c);
+    }
+    else if (self.image){
       self.image.draw(c);
     }
 
@@ -160,4 +168,14 @@ NPC.prototype.moveLeft = function() {
 NPC.prototype.moveRight = function() {
   this.velocity.x += this.speed;
   this.direction = "right";
+};
+
+
+NPC.prototype.touches = function(entity){
+  if (entity.exists) return this.boundingBox.intersects(entity.boundingBox);
+  else return false;
+}
+
+NPC.prototype.setBoundingBox = function(){
+  this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };

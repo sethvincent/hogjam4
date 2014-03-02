@@ -1,5 +1,6 @@
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
+var aabb = require('aabb-2d');
 
 module.exports = Player;
 
@@ -22,9 +23,12 @@ function Player(options){
   this.visible = true;
   this.points = 0;
 
+  this.setBoundingBox();
+
   this.on('update', function(interval){
     self.input(self.keysDown);
     self.move();
+    self.setBoundingBox();
     self.velocity.x *= self.friction;
     self.velocity.y *= self.friction;
     self.boundaries();
@@ -83,4 +87,13 @@ Player.prototype.input = function(){
     this.velocity.x += this.speed;
     this.direction = "right";
   }
+};
+
+Player.prototype.touches = function(entity){
+  if (entity.exists) return this.boundingBox.intersects(entity.boundingBox);
+  else return false;
+}
+
+Player.prototype.setBoundingBox = function(){
+  this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };

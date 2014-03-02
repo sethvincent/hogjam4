@@ -21,7 +21,8 @@
     "inherits": "^2.0.1",
     "imagepreloader": "git://github.com/sethvincent/node-imagepreloader",
     "tic": "^0.2.1",
-    "buzz": "git://github.com/jaysalvat/buzz"
+    "buzz": "git://github.com/jaysalvat/buzz",
+    "aabb-2d": "0.0.0"
   },
   "devDependencies": {
     "browserify": "^3.31.2",
