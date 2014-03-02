@@ -32,7 +32,6 @@ mouse.on('click', function(){});
 game.on('start', function(){
   console.log('started');
   loading.style.display = 'none';
-  console.log(uiElements);
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
   });
@@ -55,6 +54,7 @@ game.on('resume', function(){
   console.log('resumed');
 });
 
+
 /*
 * Sounds
 */
@@ -62,8 +62,6 @@ game.on('resume', function(){
 game.musicPaused = false;
 var song = new buzz.sound('./sounds/song.mp3');
 var zombieNoise = new buzz.sound('./sounds/zombie-noise.mp3');
-zombieNoise.autoplay = false;
-zombieNoise.loop = false;
 
 var pauseMusic = document.getElementById('pause-music');
 var playMusic = document.getElementById('play-music');
@@ -82,6 +80,7 @@ playMusic.addEventListener('click', function(e){
   game.musicPaused = false;
 });
 
+
 /*
 * THE PLAYER
 */
@@ -95,13 +94,18 @@ var player = new Player({
 
 player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
-    if (player.touches(npcArray[i])){
+    if (player.touches(npcArray[i]) && !npcArray[i].zombie){
       npcArray[i].zombie = true;
-      zombieNoise.play();
-      console.log('touched', zombieNoise)
+      player.emit('attack');
     }
   }
 });
+
+player.on('attack', function(){
+  zombieNoise.load();
+  zombieNoise.play();
+});
+
 
 /*
 *
@@ -119,6 +123,7 @@ var camera = new Camera({
   viewport: { width: game.width, height: game.height },
   map: map
 });
+
 
 /*
 * THE NPCs i.e. non-player characters
