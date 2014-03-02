@@ -22,9 +22,14 @@ var keysDown = keyboard.keysDown;
 var uiElements = [].slice.call(document.querySelectorAll('.ui'));
 var loading = document.getElementById('loading');
 
+// Player Properties
+var score = 0;
+
 // NPC Properties
 var npcArray = [];
 var NUM_OF_NPCS = 10;
+// points per NPC 
+var NPC_POINTS_VALUE = 100;
 var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
 mouse.on('click', function(){});
@@ -94,7 +99,11 @@ var player = new Player({
 
 player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
-    if (player.touches(npcArray[i]) && !npcArray[i].zombie){
+    // if player touches npc and npc has not already turned into zombie
+    if (player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
+      // add to player score
+      score +=  NPC_POINTS_VALUE;
+      console.log('current score: ' + score);
       npcArray[i].zombie = true;
       player.attack();
     }
