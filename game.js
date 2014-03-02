@@ -92,6 +92,8 @@ var preload = new Preloader;
 preload
   .add('images/zombie-baby.png')
   .add('images/tan-baby.png')
+  .add('images/brown-baby.png')
+  .add('images/white-baby.png')
   .success(function(images){ 
     
     player.image = new Sprite({
@@ -101,17 +103,20 @@ preload
       fps: 16
     });
 
+    var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
+
     for(var i = 0; i < 10; i++){
+      var baby = babySprites[MathUtil.randomInt(0,2)];
+      console.log(baby)
       npcArray[i].image = new Sprite({
         entity: npcArray[i],
-        image: images['tan-baby.png'],
+        image: images[baby],
         frames: 4,
-        fps: 16
+        fps: 12
       });
     }
 
     game.start();
-    console.log(images)
   })
   .error(function(err){ console.log(error) })
   .done();
