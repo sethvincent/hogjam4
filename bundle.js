@@ -230,7 +230,7 @@ var player = new Player({
 player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
     // if player touches npc and npc has not already turned into zombie
-    if (player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
+    if (player.attacking && player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
       // add to player score
       score +=  NPC_POINTS_VALUE;
       console.log('current score: ' + score);
@@ -286,6 +286,7 @@ preload
   .add('images/brown-baby.png')
   .add('images/white-baby.png')
   .add('images/turned-baby.png')
+  .add('images/attacking.png')
   .success(function(images){ 
     
     player.image = new Sprite({
@@ -294,6 +295,13 @@ preload
       frames: 4,
       fps: 16
     });
+
+    player.attackingImage = new Sprite({
+      entity: player,
+      image: images['attacking.png'],
+      frames: 4,
+      fps: 16
+    })
 
     for(var i = 0; i < npcArray.length; i++){
       npcArray[i].image = new Sprite({
@@ -5302,10 +5310,12 @@ function Player(options){
   this.strength = 5;
   this.visible = true;
   this.points = 0;
+  this.attacking = false;
 
   this.setBoundingBox();
 
   this.on('update', function(interval){
+    self.attacking = false;
     self.input(self.keysDown);
     self.move();
     self.setBoundingBox();
@@ -5316,7 +5326,8 @@ function Player(options){
 
   this.on('draw', function(c){
     c.save();
-    self.image.draw(c)
+    if (self.attacking) self.attackingImage.draw(c);
+    else self.image.draw(c)
     c.restore();
   });
 }
@@ -5366,6 +5377,10 @@ Player.prototype.input = function(){
   if ('D' in this.keysDown){
     this.velocity.x += this.speed;
     this.direction = "right";
+  }
+
+  if ('K' in this.keysDown){
+    this.attacking = true;
   }
 };
 

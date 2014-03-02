@@ -105,7 +105,7 @@ var player = new Player({
 player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
     // if player touches npc and npc has not already turned into zombie
-    if (player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
+    if (player.attacking && player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
       // add to player score
       score +=  NPC_POINTS_VALUE;
       scoreElement.innerText = new String(LEADING_ZEROS + score).slice(-10);
@@ -162,6 +162,7 @@ preload
   .add('images/brown-baby.png')
   .add('images/white-baby.png')
   .add('images/turned-baby.png')
+  .add('images/attacking.png')
   .success(function(images){ 
     
     player.image = new Sprite({
@@ -170,6 +171,13 @@ preload
       frames: 4,
       fps: 16
     });
+
+    player.attackingImage = new Sprite({
+      entity: player,
+      image: images['attacking.png'],
+      frames: 4,
+      fps: 16
+    })
 
     for(var i = 0; i < npcArray.length; i++){
       npcArray[i].image = new Sprite({

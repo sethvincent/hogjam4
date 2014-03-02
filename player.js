@@ -22,10 +22,12 @@ function Player(options){
   this.strength = 5;
   this.visible = true;
   this.points = 0;
+  this.attacking = false;
 
   this.setBoundingBox();
 
   this.on('update', function(interval){
+    self.attacking = false;
     self.input(self.keysDown);
     self.move();
     self.setBoundingBox();
@@ -36,7 +38,8 @@ function Player(options){
 
   this.on('draw', function(c){
     c.save();
-    self.image.draw(c)
+    if (self.attacking) self.attackingImage.draw(c);
+    else self.image.draw(c)
     c.restore();
   });
 }
@@ -86,6 +89,10 @@ Player.prototype.input = function(){
   if ('D' in this.keysDown){
     this.velocity.x += this.speed;
     this.direction = "right";
+  }
+
+  if ('K' in this.keysDown){
+    this.attacking = true;
   }
 };
 
