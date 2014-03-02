@@ -19,10 +19,18 @@ var mouse = new Mouse(game);
 var keyboard = new Keyboard(game);
 var keysDown = keyboard.keysDown;
 
+var uiElements = [].slice.call(document.querySelectorAll('.ui'));
+var loading = document.getElementById('loading');
+
 mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
+  loading.style.display = 'none';
+  console.log(uiElements)
+  uiElements.forEach(function(el, i, arr){
+    el.style.display = 'initial';
+  })
   song.play();
 });
 
@@ -41,6 +49,7 @@ game.on('pause', function(){
 game.on('resume', function(){
   console.log('resumed');
 });
+
 
 
 /*
@@ -120,6 +129,7 @@ preload
   .add('images/tan-baby.png')
   .add('images/brown-baby.png')
   .add('images/white-baby.png')
+  .add('images/turned-baby.png')
   .success(function(images){ 
     
     player.image = new Sprite({
@@ -135,6 +145,7 @@ preload
       npcArray[i].image = new Sprite({
         entity: npcArray[i],
         image: images[babySprites[MathUtil.randomInt(0,2)]],
+        turnedImage: images['turned-baby.png'],
         frames: 4,
         fps: 12
       });

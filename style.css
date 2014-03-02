@@ -1,4 +1,10 @@
-html, body { margin: 0px; padding: 0px; height: 100%; overflow: hidden; }
+html, body { 
+	font-family: Helvetica, sans-serif;
+	margin: 0px; 
+	padding: 0px; 
+	height: 100%; 
+	overflow: hidden;
+}
 
 a {
   color: #3c80c3;
@@ -14,10 +20,13 @@ a:focus {
   color: #1e4062;
 }
 
+.ui {
+	display: none;
+}
+
 #music {
 	position: absolute;
 	padding: 10px;
-	font-family: Helvetica, sans-serif;
 	color: #454545;
 	font-size: 12px;
 }
