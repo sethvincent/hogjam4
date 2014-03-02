@@ -4,6 +4,7 @@ var buzz = require('buzz');
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
+var Scenes = require('crtrdg-scene');
 
 var Player = require('./player');
 var NPC = require('./npc');
@@ -21,6 +22,7 @@ var keysDown = keyboard.keysDown;
 
 var uiElements = [].slice.call(document.querySelectorAll('.ui'));
 var loading = document.getElementById('loading');
+var menuEl = document.getElementById('menu');
 
 // Player Properties
 var score = 0;
@@ -41,7 +43,8 @@ game.on('start', function(){
   /* reset score onload */
   score = 0;
   scoreElement.innerText = LEADING_ZEROS;
-  loading.style.display = 'none';
+  console.log(menu)
+  menuEl.style.display = 'none';
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
   });
@@ -196,7 +199,45 @@ preload
       });
     }
 
-    game.start();
+    scenes.set(menu);
   })
   .error(function(err){ console.log(error) })
   .done();
+
+
+/*
+* SCENES 
+*/
+
+var scenes = new Scenes(game);
+
+var menu = scenes.create({
+  name: 'menu'
+});
+
+menu.on('start', function(){
+  loading.style.display = 'none';
+  playButton.style.display = 'initial';
+});
+
+var playButton = document.getElementById('play');
+
+playButton.addEventListener('click', function(e){
+  scenes.set(play);
+}, false);
+
+var play = scenes.create({
+  name: 'play'
+});
+
+play.on('start', function(){
+  game.start();
+});
+
+var over = scenes.create({
+  name: 'play'
+});
+
+over.on('start', function(){
+  
+});
