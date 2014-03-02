@@ -37,7 +37,7 @@ game.on('resume', function(){
 
 var preload = new Preloader;
 preload
-  .add('/images/the-baby.png')
+  .add('images/the-baby.png')
   .success(function(images){ 
     player.image = new Sprite({
       entity: player,
