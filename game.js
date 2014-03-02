@@ -22,15 +22,20 @@ var keysDown = keyboard.keysDown;
 var uiElements = [].slice.call(document.querySelectorAll('.ui'));
 var loading = document.getElementById('loading');
 
+// NPC Properties
+var npcArray = [];
+var NUM_OF_NPCS = 10;
+var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
+
 mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
   loading.style.display = 'none';
-  console.log(uiElements)
+  console.log(uiElements);
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
-  })
+  });
   song.play();
 });
 
@@ -49,8 +54,6 @@ game.on('pause', function(){
 game.on('resume', function(){
   console.log('resumed');
 });
-
-
 
 /*
 * Sounds
@@ -79,7 +82,6 @@ playMusic.addEventListener('click', function(e){
   game.musicPaused = false;
 });
 
-
 /*
 * THE PLAYER
 */
@@ -100,7 +102,6 @@ player.on('update', function(){
     }
   }
 });
-
 
 /*
 *
@@ -124,9 +125,7 @@ var camera = new Camera({
 */
 
 // Why pass in game to npc objects?
-var npcArray = [];
-
-for(var i = 0; i < 10; i++){
+for(var i = 0; i < NUM_OF_NPCS; i++){
   npcArray[i] = new NPC({
     game: game,
     map: map,
@@ -151,8 +150,6 @@ preload
       frames: 4,
       fps: 16
     });
-
-    var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
     for(var i = 0; i < npcArray.length; i++){
       npcArray[i].image = new Sprite({
