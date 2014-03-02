@@ -137,6 +137,8 @@ var Player = require('./player');
 var NPC = require('./npc');
 
 var Sprite = require('./util/sprite');
+var MathUtil = require('./util/math');
+
 var Camera = require('./camera');
 var Map = require('./map');
 
@@ -144,6 +146,8 @@ var game = new Game();
 var mouse = new Mouse(game);
 var keyboard = new Keyboard(game);
 var keysDown = keyboard.keysDown;
+
+var imageArray = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
 mouse.on('click', function(){});
 
@@ -199,39 +203,20 @@ var camera = new Camera({
 
 /*
 * THE NPCs i.e. non-player characters
-* TBD Possibly an array of NPCs
 */
 
-// Why pass in game to npc1?
-// Test creating 3 diff NPCs with each path option, horizontal, vert and static
-var npc1 = new NPC({
-  game: game,
-  map: map,
-  camera: camera,
-  position: { x: 100, y: 200 },
-  path: 1
-}).addTo(game);
+// Why pass in game to npc objects?
+var npcArray = [];
 
-npc1.move();
-
-var npc2 = new NPC({
-  game: game,
-  map: map,
-  position: { x: 250, y: 250 },
-  path: 0
-}).addTo(game);
-
-npc2.move();
-
-var npc3 = new NPC({
-  game: game,
-  map: map,
-  position: { x: 130, y: 300 },
-  path: 2
-}).addTo(game);
-
-npc3.move();
-
+for(var i = 0; i < 10; i++){
+  npcArray[i] = new NPC({
+    game: game,
+    map: map,
+    camera: camera,
+    position: { x: MathUtil.randomInt(0, 1000), y: MathUtil.randomInt(0, 1000) },
+    path: MathUtil.randomInt(0, 3)
+  }).addTo(game);
+}
 
 var preload = new Preloader;
 preload
@@ -246,19 +231,21 @@ preload
       fps: 16
     });
 
-    npc1.image = new Sprite({
-      entity: npc1,
-      image: images['tan-baby.png'],
-      frames: 4,
-      fps: 16
-    });
+    for(var i = 0; i < 10; i++){
+      npcArray[i].image = new Sprite({
+        entity: npcArray[i],
+        image: images['tan-baby.png'],
+        frames: 4,
+        fps: 16
+      });
+    }
 
     game.start();
     console.log(images)
   })
   .error(function(err){ console.log(error) })
   .done();
-},{"./camera":1,"./map":3,"./npc":18,"./player":19,"./util/sprite":21,"crtrdg-gameloop":7,"crtrdg-keyboard":10,"crtrdg-mouse":13,"imagepreloader":15}],3:[function(require,module,exports){
+},{"./camera":1,"./map":3,"./npc":14,"./player":15,"./util/math":16,"./util/sprite":17,"crtrdg-gameloop":6,"crtrdg-keyboard":8,"crtrdg-mouse":10,"imagepreloader":11}],3:[function(require,module,exports){
 var randomRGBA = require('./util/math').randomRGBA;
 
 module.exports = Map;
@@ -298,7 +285,7 @@ Map.prototype.draw = function(context, camera) {
   context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -camera.position.x, -camera.position.y, this.image.width, this.image.height);
 };
 
-},{"./util/math":20}],4:[function(require,module,exports){
+},{"./util/math":16}],4:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -614,6 +601,8 @@ Entity.prototype.addTo = function(game){
 
   if (!this.game.entities) this.game.entities = [];
 
+  console.log(this.game, this.game.entities)
+
   this.game.entities.push(this);
   this.game.findEntity = this.findEntity;
   this.initializeListeners();
@@ -624,6 +613,7 @@ Entity.prototype.addTo = function(game){
 
 Entity.prototype.initializeListeners = function(){
   var self = this;
+  
   this.findEntity(this, function(exists, entities, index){
     if (exists){
       self.game.on('update', function(interval){
@@ -667,32 +657,7 @@ Entity.prototype.findEntity = function(entity, callback){
   callback(exists, entities, index);
 };
 
-},{"events":4,"inherits":6}],6:[function(require,module,exports){
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-},{}],7:[function(require,module,exports){
+},{"events":4,"inherits":12}],6:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var requestAnimationFrame = require('raf');
 var inherits = require('inherits');
@@ -726,9 +691,9 @@ function Game(options){
   if (options.maxListeners) this.setMaxListeners(options.maxListeners);
   else this.setMaxListeners(0);
 
-  //window.addEventListener('load', function(){
-  //  self.start();
-  //});
+  window.addEventListener('load', function(){
+    self.start();
+  });
 }
 
 Game.prototype.start = function(){
@@ -769,9 +734,7 @@ Game.prototype.draw = function(){
   this.emit('draw', this.context);
   this.emit('draw-foreground', this.context);
 };
-},{"events":4,"inherits":8,"raf":9}],8:[function(require,module,exports){
-module.exports=require(6)
-},{}],9:[function(require,module,exports){
+},{"events":4,"inherits":12,"raf":7}],7:[function(require,module,exports){
 module.exports = raf
 
 var EE = require('events').EventEmitter
@@ -824,7 +787,7 @@ raf.polyfill = _raf
 raf.now = now
 
 
-},{"events":4}],10:[function(require,module,exports){
+},{"events":4}],8:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var vkey = require('vkey');
@@ -855,9 +818,7 @@ Keyboard.prototype.initializeListeners = function(){
     delete self.keysDown[vkey[e.keyCode]];
   }, false);
 };
-},{"events":4,"inherits":11,"vkey":12}],11:[function(require,module,exports){
-module.exports=require(6)
-},{}],12:[function(require,module,exports){
+},{"events":4,"inherits":12,"vkey":9}],9:[function(require,module,exports){
 var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
   , isOSX = /OS X/.test(ua)
   , isOpera = /Opera/.test(ua)
@@ -995,7 +956,7 @@ for(i = 112; i < 136; ++i) {
   output[i] = 'F'+(i-111)
 }
 
-},{}],13:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -1062,9 +1023,7 @@ Mouse.prototype.calculateOffset = function(e, callback){
   callback(location);
 }
 
-},{"events":4,"inherits":14}],14:[function(require,module,exports){
-module.exports=require(6)
-},{}],15:[function(require,module,exports){
+},{"events":4,"inherits":12}],11:[function(require,module,exports){
 ;(function (exports) {
     var ImageSet = function(params) {
         if (params === undefined) 
@@ -1121,9 +1080,32 @@ module.exports=require(6)
     }
 })(typeof exports === 'undefined' ?  this : exports)
 
-},{}],16:[function(require,module,exports){
-module.exports=require(6)
-},{}],17:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],13:[function(require,module,exports){
 /*
  * tic
  * https://github.com/shama/tic
@@ -1170,7 +1152,7 @@ Tic.prototype.tick = function(dt) {
   });
 };
 
-},{}],18:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 
@@ -1229,8 +1211,8 @@ function NPC(options) {
   this.on('draw', function(c) {
     c.save();
 
-    if (this.image){
-      this.image.draw(c);
+    if (self.image){
+      self.image.draw(c);
     }
 
     else {
@@ -1334,7 +1316,7 @@ NPC.prototype.moveRight = function() {
   this.velocity.x += this.speed;
   this.direction = "right";
 };
-},{"crtrdg-entity":5,"inherits":16}],19:[function(require,module,exports){
+},{"crtrdg-entity":5,"inherits":12}],15:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 
@@ -1429,7 +1411,7 @@ Player.prototype.input = function(){
     this.direction = "right";
   }
 };
-},{"crtrdg-entity":5,"inherits":16}],20:[function(require,module,exports){
+},{"crtrdg-entity":5,"inherits":12}],16:[function(require,module,exports){
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -1465,7 +1447,7 @@ module.exports = {
   randomGray: randomGray,
   randomGrayAlpha: randomGray
 };
-},{}],21:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var tic = require('tic')();
 
 module.exports = Sprite;
@@ -1521,4 +1503,4 @@ Sprite.prototype.draw = function(context){
   );
 };
 
-},{"tic":17}]},{},[2])
+},{"tic":13}]},{},[2])
