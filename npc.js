@@ -9,6 +9,7 @@ function NPC(options) {
 
   this.game = options.game;
   this.map = options.map;
+  this.camera = options.camera;
 
   this.size = {
     x: 50,
