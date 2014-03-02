@@ -167,22 +167,6 @@ game.on('resume', function(){
   console.log('resumed');
 });
 
-var preload = new Preloader;
-preload
-  .add('images/the-baby.png')
-  .success(function(images){ 
-    player.image = new Sprite({
-      entity: player,
-      image: images['the-baby.png'],
-      frames: 4,
-      fps: 16
-    });
-    game.start();
-    console.log(images)
-  })
-  .error(function(err){ console.log(error) })
-  .done();
-
 
 /*
 * THE PLAYER
@@ -246,6 +230,33 @@ var npc3 = new NPC({
 }).addTo(game);
 
 npc3.move();
+
+
+var preload = new Preloader;
+preload
+  .add('images/zombie-baby.png')
+  .add('images/tan-baby.png')
+  .success(function(images){ 
+    
+    player.image = new Sprite({
+      entity: player,
+      image: images['zombie-baby.png'],
+      frames: 4,
+      fps: 16
+    });
+
+    //npc1.image = new Sprite({
+    //  entity: npc1,
+    //  image: images['tan-baby.png'],
+    //  frames: 4,
+    //  fps: 16
+    //});
+
+    game.start();
+    console.log(images)
+  })
+  .error(function(err){ console.log(error) })
+  .done();
 },{"./camera":1,"./map":3,"./npc":18,"./player":19,"./util/sprite":21,"crtrdg-gameloop":7,"crtrdg-keyboard":10,"crtrdg-mouse":13,"imagepreloader":15}],3:[function(require,module,exports){
 var randomRGBA = require('./util/math').randomRGBA;
 
@@ -1215,13 +1226,20 @@ function NPC(options) {
 
   this.on('draw', function(c) {
     c.save();
-    c.fillStyle = self.color;
-    c.fillRect(
-      self.position.x,
-      self.position.y,
-      self.size.x,
-      self.size.y
-    );
+
+    if (this.image){
+      this.image.draw(c);
+    }
+
+    else {
+      c.fillStyle = self.color;
+      c.fillRect(
+        self.position.x,
+        self.position.y,
+        self.size.x,
+        self.size.y
+      );
+    }
     c.restore();
   });
 }
