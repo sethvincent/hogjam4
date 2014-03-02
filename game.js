@@ -7,6 +7,8 @@ var Player = require('./player');
 var NPC = require('./npc');
 
 var Sprite = require('./util/sprite');
+var MathUtil = require('./util/math');
+
 var Camera = require('./camera');
 var Map = require('./map');
 
@@ -14,6 +16,8 @@ var game = new Game();
 var mouse = new Mouse(game);
 var keyboard = new Keyboard(game);
 var keysDown = keyboard.keysDown;
+
+var imageArray = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
 
 mouse.on('click', function(){});
 
@@ -69,39 +73,20 @@ var camera = new Camera({
 
 /*
 * THE NPCs i.e. non-player characters
-* TBD Possibly an array of NPCs
 */
 
-// Why pass in game to npc1?
-// Test creating 3 diff NPCs with each path option, horizontal, vert and static
-var npc1 = new NPC({
-  game: game,
-  map: map,
-  camera: camera,
-  position: { x: 100, y: 200 },
-  path: 1
-}).addTo(game);
+// Why pass in game to npc objects?
+var npcArray = [];
 
-npc1.move();
-
-var npc2 = new NPC({
-  game: game,
-  map: map,
-  position: { x: 250, y: 250 },
-  path: 0
-}).addTo(game);
-
-npc2.move();
-
-var npc3 = new NPC({
-  game: game,
-  map: map,
-  position: { x: 130, y: 300 },
-  path: 2
-}).addTo(game);
-
-npc3.move();
-
+for(var i = 0; i < 10; i++){
+  npcArray[i] = new NPC({
+    game: game,
+    map: map,
+    camera: camera,
+    position: { x: MathUtil.randomInt(0, 1000), y: MathUtil.randomInt(0, 1000) },
+    path: MathUtil.randomInt(0, 3)
+  }).addTo(game);
+}
 
 var preload = new Preloader;
 preload
@@ -116,12 +101,14 @@ preload
       fps: 16
     });
 
-    npc1.image = new Sprite({
-      entity: npc1,
-      image: images['tan-baby.png'],
-      frames: 4,
-      fps: 16
-    });
+    for(var i = 0; i < 10; i++){
+      npcArray[i].image = new Sprite({
+        entity: npcArray[i],
+        image: images['tan-baby.png'],
+        frames: 4,
+        fps: 16
+      });
+    }
 
     game.start();
     console.log(images)
