@@ -30,3 +30,17 @@ a:focus {
 	color: #454545;
 	font-size: 12px;
 }
+
+#score{
+	position: fixed;
+	padding: 10px;
+	padding-right: 20%;
+	top: 0;
+	right: 0;
+	font-size: 20px;
+}
+
+#points{
+	font-size: 26px;
+	color: #FF0000;
+}
