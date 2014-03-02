@@ -134,6 +134,7 @@ var buzz = require('buzz');
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
 var Keyboard = require('crtrdg-keyboard');
+var Scenes = require('crtrdg-scene');
 
 var Player = require('./player');
 var NPC = require('./npc');
@@ -151,9 +152,12 @@ var keysDown = keyboard.keysDown;
 
 var uiElements = [].slice.call(document.querySelectorAll('.ui'));
 var loading = document.getElementById('loading');
+var menuEl = document.getElementById('menu');
 
 // Player Properties
 var score = 0;
+var scoreElement = document.getElementById('points');
+var LEADING_ZEROS = '0000000000';
 
 // NPC Properties
 var npcArray = [];
@@ -166,7 +170,11 @@ mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
-  loading.style.display = 'none';
+  /* reset score onload */
+  score = 0;
+  scoreElement.innerText = LEADING_ZEROS;
+  console.log(menu)
+  menuEl.style.display = 'none';
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
   });
@@ -233,6 +241,7 @@ player.on('update', function(){
     if (player.attacking && player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
       // add to player score
       score +=  NPC_POINTS_VALUE;
+      scoreElement.innerText = new String(LEADING_ZEROS + score).slice(-10);
       console.log('current score: ' + score);
       npcArray[i].zombie = true;
       player.attack();
@@ -320,11 +329,50 @@ preload
       });
     }
 
-    game.start();
+    scenes.set(menu);
   })
   .error(function(err){ console.log(error) })
   .done();
-},{"./camera":1,"./map":3,"./npc":21,"./player":22,"./util/math":23,"./util/sprite":24,"buzz":7,"crtrdg-gameloop":10,"crtrdg-keyboard":13,"crtrdg-mouse":16,"imagepreloader":18}],3:[function(require,module,exports){
+
+
+/*
+* SCENES 
+*/
+
+var scenes = new Scenes(game);
+
+var menu = scenes.create({
+  name: 'menu'
+});
+
+menu.on('start', function(){
+  loading.style.display = 'none';
+  playButton.style.display = 'initial';
+});
+
+var playButton = document.getElementById('play');
+
+playButton.addEventListener('click', function(e){
+  scenes.set(play);
+}, false);
+
+var play = scenes.create({
+  name: 'play'
+});
+
+play.on('start', function(){
+  game.start();
+});
+
+var over = scenes.create({
+  name: 'play'
+});
+
+over.on('start', function(){
+  
+});
+
+},{"./camera":1,"./map":3,"./npc":23,"./player":24,"./util/math":25,"./util/sprite":26,"buzz":7,"crtrdg-gameloop":10,"crtrdg-keyboard":13,"crtrdg-mouse":16,"crtrdg-scene":18,"imagepreloader":20}],3:[function(require,module,exports){
 var randomRGBA = require('./util/math').randomRGBA;
 
 module.exports = Map;
@@ -364,7 +412,7 @@ Map.prototype.draw = function(context, camera) {
   context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -camera.position.x, -camera.position.y, this.image.width, this.image.height);
 };
 
-},{"./util/math":23}],4:[function(require,module,exports){
+},{"./util/math":25}],4:[function(require,module,exports){
 module.exports = AABB
 
 var vec2 = require('gl-matrix').vec2
@@ -4998,6 +5046,73 @@ Mouse.prototype.calculateOffset = function(e, callback){
 },{"events":6,"inherits":17}],17:[function(require,module,exports){
 module.exports=require(9)
 },{}],18:[function(require,module,exports){
+var EventEmitter = require('events').EventEmitter;
+var inherits = require('inherits');
+
+module.exports = Scenes;
+
+function Scenes(game){
+  this.game = game || {};
+  this.scenes = [];
+  this.active = null;
+  this.previous = null;
+  var self = this;
+
+  this.game.on('update', function(interval){
+    if (self.active) self.active.update(interval);
+  });
+
+  this.game.on('draw', function(context){
+    if (self.active) self.active.draw(context);
+  });
+};
+
+Scenes.prototype.add = function(scene){
+  this.scenes.push(scene);
+  return this;
+};
+
+Scenes.prototype.create = function(options){
+  var scene = new Scene(options);
+  this.add(scene);
+  return scene;
+};
+
+Scenes.prototype.set = function(scene){
+  if (this.active !== null) this.active.emit('end');
+  this.active = scene;
+  scene.emit('start', scene);
+};
+
+Scenes.prototype.get = function(sceneName){
+  for (var i=0; i<this.scenes.length; i++){
+    if (this.scenes[i].name === sceneName) {
+      return this.scenes[i];
+    }
+  }
+};
+
+
+exports.Scene = Scene;
+inherits(Scene, EventEmitter);
+
+function Scene(options){
+  for (var key in options){
+    this[key] = options[key];
+  }
+}
+
+Scene.prototype.update = function(interval){
+  this.emit('update', interval)
+};
+
+Scene.prototype.draw = function(context){
+  this.emit('draw', context);
+};
+
+},{"events":6,"inherits":19}],19:[function(require,module,exports){
+module.exports=require(9)
+},{}],20:[function(require,module,exports){
 ;(function (exports) {
     var ImageSet = function(params) {
         if (params === undefined) 
@@ -5054,9 +5169,9 @@ module.exports=require(9)
     }
 })(typeof exports === 'undefined' ?  this : exports)
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports=require(9)
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /*
  * tic
  * https://github.com/shama/tic
@@ -5103,7 +5218,7 @@ Tic.prototype.tick = function(dt) {
   });
 };
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
@@ -5285,7 +5400,7 @@ NPC.prototype.touches = function(entity){
 NPC.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
-},{"aabb-2d":4,"crtrdg-entity":8,"inherits":19}],22:[function(require,module,exports){
+},{"aabb-2d":4,"crtrdg-entity":8,"inherits":21}],24:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
@@ -5392,7 +5507,7 @@ Player.prototype.touches = function(entity){
 Player.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
-},{"aabb-2d":4,"crtrdg-entity":8,"inherits":19}],23:[function(require,module,exports){
+},{"aabb-2d":4,"crtrdg-entity":8,"inherits":21}],25:[function(require,module,exports){
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -5428,7 +5543,7 @@ module.exports = {
   randomGray: randomGray,
   randomGrayAlpha: randomGray
 };
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var tic = require('tic')();
 
 module.exports = Sprite;
@@ -5484,4 +5599,4 @@ Sprite.prototype.draw = function(context){
   );
 };
 
-},{"tic":20}]},{},[2])
+},{"tic":22}]},{},[2])
