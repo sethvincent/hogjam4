@@ -15,13 +15,13 @@ Map.prototype.generate = function(ticks){
   context.canvas.width = this.width;
   context.canvas.height = this.height;
 
-  var size = 30;
+  var size = 4;
   var columns = this.width / size;
   var rows = this.height / size;
 
   for (var x = 0, i = 0; i < columns; x+=size, i++){
     for (var y = 0, j=0; j < rows; y+=size, j++){
-      context.fillStyle = randomRGBA(0, 255, 0, 255, 0, 255, 1);
+      context.fillStyle = randomRGBA(250, 255, 250, 255, 200, 225, 1);
       context.fillRect(x, y, size, size);
     }
   }
