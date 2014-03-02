@@ -58,6 +58,9 @@ game.on('resume', function(){
 
 game.musicPaused = false;
 var song = new buzz.sound('./sounds/song.mp3');
+var zombieNoise = new buzz.sound('./sounds/zombie-noise.mp3');
+zombieNoise.autoplay = false;
+zombieNoise.loop = false;
 
 var pauseMusic = document.getElementById('pause-music');
 var playMusic = document.getElementById('play-music');
@@ -92,6 +95,8 @@ player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
     if (player.touches(npcArray[i])){
       npcArray[i].zombie = true;
+      zombieNoise.play();
+      console.log('touched', zombieNoise)
     }
   }
 });
