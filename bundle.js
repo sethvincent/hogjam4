@@ -364,8 +364,8 @@ play.on('start', function(){
   game.start();
 });
 
-play.on('update', function(i){
-  tic.tick(i);
+play.on('update', function(dt){
+  tic.tick(dt);
   if (turnedBabies === NUM_OF_NPCS) scenes.set(over);
 });
 
