@@ -1,5 +1,5 @@
 html, body { 
-	font-family: Helvetica, sans-serif;
+	font-family: "Ubuntu Mono", Monaco, monospace;
 	margin: 0px; 
 	padding: 0px; 
 	height: 100%; 
@@ -43,4 +43,43 @@ a:focus {
 #points{
 	font-size: 26px;
 	color: #FF0000;
+}
+
+#loading {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#menu {
+	margin-top: 80px;
+	text-align: center;
+}
+
+#menu img {
+	display: block;
+	margin: 0px auto 50px auto;
+}
+
+#menu #play {
+	font-size: 25px;
+	background-color: #B5DCB4;
+	padding: 10px 15px;
+	color: #fff;
+	text-decoration: none;
+}
+
+#menu #play:hover {
+	background-color: #D34645;
+}
+
+#menu h1 {
+	color: #b5dcb4;
+}
+
+.red {
+	color: #D34645;
+}
+
+.grey {
+	color: #666;
 }
