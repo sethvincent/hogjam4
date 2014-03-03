@@ -388,6 +388,10 @@ over.on('start', function(){
   overEl.style.display = 'block';
 });
 
+playAgainButton.addEventListener('click', function(e){
+  document.location.reload();
+}, false);
+
 },{"./camera":1,"./map":3,"./npc":23,"./player":24,"./util/math":25,"./util/sprite":26,"buzz":7,"crtrdg-gameloop":10,"crtrdg-keyboard":13,"crtrdg-mouse":16,"crtrdg-scene":18,"imagepreloader":20,"tic":22}],3:[function(require,module,exports){
 var randomRGBA = require('./util/math').randomRGBA;
 
