@@ -236,6 +236,7 @@ play.on('start', function(){
 
 play.on('update', function(i){
   tic.tick(i);
+  if (turnedBabies === NUM_OF_NPCS) scenes.set(over);
 });
 
 var seconds = 60;

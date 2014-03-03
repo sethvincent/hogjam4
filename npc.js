@@ -127,8 +127,14 @@ NPC.prototype.boundaries = function() {
   }
 
   /* Moving Horizontal Right and went out of bounds */
-  if ((this.position.x >= this.boundary.width - this.size.x) || (this.position.x >= this.map.width - this.size.x)) {
+  if (this.position.x >= this.boundary.width - this.size.x) {
     this.position.x = this.boundary.width - this.size.x;
+    this.moveLeft();
+  }
+
+    /* Moving Horizontal Right and went out of bounds */
+  if (this.position.x >= this.map.width - this.size.x) {
+    this.position.x = this.map.width - this.size.x;
     this.moveLeft();
   }
 
@@ -145,6 +151,11 @@ NPC.prototype.boundaries = function() {
   /* Moving Vertical Down and went out of bounds */
   if ((this.position.y >= this.boundary.height - this.size.y) || (this.position.y >= this.map.height - this.size.y)) {
     this.position.y = this.boundary.height - this.size.y;
+    this.moveUp();
+  }
+
+  if (this.position.y >= this.map.height - this.size.y) {
+    this.position.y = this.map.height - this.size.y;
     this.moveUp();
   }
 };
