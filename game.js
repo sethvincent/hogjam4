@@ -203,7 +203,7 @@ preload
 
     scenes.set(menu);
   })
-  .error(function(err){ console.log(error); })
+  .error(function(err){ console.log(err); })
   .done();
 
 
