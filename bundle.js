@@ -161,7 +161,7 @@ var LEADING_ZEROS = '0000000000';
 
 // NPC Properties
 var npcArray = [];
-var NUM_OF_NPCS = 10;
+var NUM_OF_NPCS = 100;
 // points per NPC 
 var NPC_POINTS_VALUE = 100;
 var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
@@ -173,7 +173,7 @@ game.on('start', function(){
   /* reset score onload */
   score = 0;
   scoreElement.innerText = LEADING_ZEROS;
-  console.log(menu)
+  console.log(menu);
   menuEl.style.display = 'none';
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
@@ -261,7 +261,7 @@ player.attack =  function(){
 *
 */
 
-var map = new Map(game, 5000, 5000);
+var map = new Map(game, 2500, 2500);
 map.generate();
 
 var camera = new Camera({
@@ -276,14 +276,13 @@ var camera = new Camera({
 /*
 * THE NPCs i.e. non-player characters
 */
-
 // Why pass in game to npc objects?
 for(var i = 0; i < NUM_OF_NPCS; i++){
   npcArray[i] = new NPC({
     game: game,
     map: map,
     camera: camera,
-    position: { x: MathUtil.randomInt(0, 1000), y: MathUtil.randomInt(0, 1000) },
+    position: { x: MathUtil.randomInt(0, (map.width - 16)), y: MathUtil.randomInt(0, (map.height - 16)) },
     path: MathUtil.randomInt(0, 3)
   }).addTo(game);
 }
@@ -5223,7 +5222,11 @@ var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
 
+var MathUtil = require('./util/math');
+
 module.exports = NPC;
+
+var MAX_NPC_FRICTION = 0.2;
 
 function NPC(options) {
   Entity.call(this);
@@ -5249,12 +5252,12 @@ function NPC(options) {
   this.boundary = {
     x: this.position.x,
     y: this.position.y,
-    width: (this.size.x * 6) + this.position.x,
-    height: (this.size.y * 7) + this.position.y
+    width: (this.size.x * MathUtil.randomInt(4, 10)) + this.position.x,
+    height: (this.size.y * MathUtil.randomInt(4, 10)) + this.position.y
   };
 
   this.speed = 18;
-  this.friction = 0.2;
+  this.friction = (Math.random() * MAX_NPC_FRICTION);
   this.health = 100;
   this.strength = 5;
   this.color = '#ff0099';
@@ -5400,7 +5403,7 @@ NPC.prototype.touches = function(entity){
 NPC.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
-},{"aabb-2d":4,"crtrdg-entity":8,"inherits":21}],24:[function(require,module,exports){
+},{"./util/math":25,"aabb-2d":4,"crtrdg-entity":8,"inherits":21}],24:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
