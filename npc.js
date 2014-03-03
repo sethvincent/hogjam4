@@ -2,7 +2,11 @@ var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
 
+var MathUtil = require('./util/math');
+
 module.exports = NPC;
+
+var MAX_NPC_FRICTION = 0.2;
 
 function NPC(options) {
   Entity.call(this);
@@ -28,12 +32,12 @@ function NPC(options) {
   this.boundary = {
     x: this.position.x,
     y: this.position.y,
-    width: (this.size.x * 6) + this.position.x,
-    height: (this.size.y * 7) + this.position.y
+    width: (this.size.x * MathUtil.randomInt(4, 10)) + this.position.x,
+    height: (this.size.y * MathUtil.randomInt(4, 10)) + this.position.y
   };
 
   this.speed = 18;
-  this.friction = 0.2;
+  this.friction = (Math.random() * MAX_NPC_FRICTION);
   this.health = 100;
   this.strength = 5;
   this.color = '#ff0099';
