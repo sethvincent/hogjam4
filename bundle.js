@@ -179,7 +179,7 @@ game.on('start', function(){
   /* reset score onload */
   score = 0;
   scoreElement.innerText = LEADING_ZEROS;
-  console.log(menu);
+  //console.log(menu);
   menuEl.style.display = 'none';
   uiElements.forEach(function(el, i, arr){
     el.style.display = 'initial';
@@ -240,11 +240,11 @@ var player = new Player({
 player.on('update', function(){
   for(var i=0; i<npcArray.length; i++){
     // if player touches npc and npc has not already turned into zombie
-    if (player.attacking && player.touches(npcArray[i]) && (npcArray[i].zombie != true)){
+    if (player.attacking && player.touches(npcArray[i]) && (npcArray[i].zombie !== true)){
       // add to player score
       score +=  NPC_POINTS_VALUE;
       scoreElement.innerText = new String(LEADING_ZEROS + score).slice(-10);
-      console.log('current score: ' + score);
+      //console.log('current score: ' + score);
       npcArray[i].zombie = true;
       turnedBabies += 1;
       player.attack();
@@ -290,7 +290,7 @@ for(var i = 0; i < NUM_OF_NPCS; i++){
   }).addTo(game);
 }
 
-var preload = new Preloader;
+var preload = new Preloader();
 preload
   .add('images/zombie-baby.png')
   .add('images/tan-baby.png')
@@ -298,7 +298,7 @@ preload
   .add('images/white-baby.png')
   .add('images/turned-baby.png')
   .add('images/attacking.png')
-  .success(function(images){ 
+  .success(function(images){
     
     player.image = new Sprite({
       entity: player,
@@ -312,7 +312,7 @@ preload
       image: images['attacking.png'],
       frames: 4,
       fps: 16
-    })
+    });
 
     for(var i = 0; i < npcArray.length; i++){
       npcArray[i].image = new Sprite({
@@ -333,7 +333,7 @@ preload
 
     scenes.set(menu);
   })
-  .error(function(err){ console.log(error) })
+  .error(function(err){ console.log(err); })
   .done();
 
 
