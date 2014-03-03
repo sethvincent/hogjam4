@@ -257,3 +257,7 @@ over.on('start', function(){
   else overText.innerText = 'YEP.'
   overEl.style.display = 'block';
 });
+
+playAgainButton.addEventListener('click', function(e){
+  document.location.reload();
+}, false);
