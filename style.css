@@ -7,17 +7,17 @@ html, body {
 }
 
 a {
-  color: #3c80c3;
+  color: #D34645;
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+	color: #9B3131;
 }
 
 a:active,
 a:focus {
-  color: #1e4062;
+  color: #9B3131;
 }
 
 .ui {
@@ -34,15 +34,28 @@ a:focus {
 #score{
 	position: fixed;
 	padding: 10px;
-	padding-right: 20%;
-	top: 0;
+	top: 40px;
 	right: 0;
 	font-size: 20px;
+	color: #B5DCB4;
 }
 
 #points{
 	font-size: 26px;
-	color: #FF0000;
+	color: #D34645;
+}
+
+#timer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	font-size: 40px;
+	color: #B5DCB4;
+	padding: 10px;
+}
+
+#seconds {
+	color: #D34645;
 }
 
 #loading {
@@ -82,4 +95,33 @@ a:focus {
 
 .grey {
 	color: #666;
+}
+
+#over {
+	position: absolute;
+	margin-top: 100px;
+	text-align: center;
+	font-weight: bold;
+	color: #D34645;
+	display: none;
+	font-size: 50px;
+	width: 100%;
+	margin-left: 30px;
+}
+
+#over-text {
+	margin-bottom: 0px;
+	font-size: 200px;
+}
+
+#play-again {
+	font-size: 25px;
+	background-color: #D34645;
+	padding: 10px 15px;
+	color: #fff;
+	text-decoration: none;
+}
+
+#play-again:hover {
+	background-color: #B5DCB4;
 }

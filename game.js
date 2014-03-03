@@ -1,5 +1,6 @@
 var Preloader = require('imagepreloader');
 var buzz = require('buzz');
+var tic = require('tic')();
 
 var Game = require('crtrdg-gameloop');
 var Mouse = require('crtrdg-mouse');
@@ -23,6 +24,11 @@ var keysDown = keyboard.keysDown;
 var uiElements = [].slice.call(document.querySelectorAll('.ui'));
 var loading = document.getElementById('loading');
 var menuEl = document.getElementById('menu');
+var playButton = document.getElementById('play');
+var secondsEl = document.getElementById('seconds');
+var overEl = document.getElementById('over');
+var overText = document.getElementById('over-text');
+var playAgainButton = document.getElementById('play-again');
 
 // Player Properties
 var score = 0;
@@ -32,11 +38,11 @@ var LEADING_ZEROS = '0000000000';
 // NPC Properties
 var npcArray = [];
 var NUM_OF_NPCS = 100;
+var turnedBabies = 0;
+
 // points per NPC 
 var NPC_POINTS_VALUE = 100;
 var babySprites = ['tan-baby.png', 'brown-baby.png', 'white-baby.png'];
-
-mouse.on('click', function(){});
 
 game.on('start', function(){
   console.log('started');
@@ -49,10 +55,6 @@ game.on('start', function(){
     el.style.display = 'initial';
   });
   song.play();
-});
-
-game.on('update', function(interval){
-	//console.log(map, camera);
 });
 
 game.on('draw', function(context){
@@ -114,6 +116,7 @@ player.on('update', function(){
       scoreElement.innerText = new String(LEADING_ZEROS + score).slice(-10);
       console.log('current score: ' + score);
       npcArray[i].zombie = true;
+      turnedBabies += 1;
       player.attack();
     }
   }
@@ -152,7 +155,7 @@ for(var i = 0; i < NUM_OF_NPCS; i++){
     game: game,
     map: map,
     camera: camera,
-    position: { x: MathUtil.randomInt(0, (map.width - 16)), y: MathUtil.randomInt(0, (map.height - 16)) },
+    position: { x: MathUtil.randomInt(0, (map.width - 64)), y: MathUtil.randomInt(0, (map.height - 64)) },
     path: MathUtil.randomInt(0, 3)
   }).addTo(game);
 }
@@ -219,8 +222,6 @@ menu.on('start', function(){
   playButton.style.display = 'initial';
 });
 
-var playButton = document.getElementById('play');
-
 playButton.addEventListener('click', function(e){
   scenes.set(play);
 }, false);
@@ -233,10 +234,25 @@ play.on('start', function(){
   game.start();
 });
 
+play.on('update', function(i){
+  tic.tick(i);
+});
+
+var seconds = 60;
+
+tic.interval(function(param1) {
+  seconds -= 1;
+  secondsEl.innerText = seconds;
+  if (seconds === 0) scenes.set(over);
+}, 1000, 'Every');
+
 var over = scenes.create({
   name: 'play'
 });
 
 over.on('start', function(){
-  
+  game.pause();
+  if (turnedBabies < NUM_OF_NPCS) overText.innerText = 'NOPE.'
+  else overText.innerText = 'YEP.'
+  overEl.style.display = 'block';
 });
