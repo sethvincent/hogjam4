@@ -333,7 +333,7 @@ preload
 
     scenes.set(menu);
   })
-  .error(function(err){ console.log(error); })
+  .error(function(err){ console.log(err); })
   .done();
 
 
@@ -392,7 +392,7 @@ playAgainButton.addEventListener('click', function(e){
   document.location.reload();
 }, false);
 
-},{"./camera":1,"./map":3,"./npc":18,"./player":19,"./util/math":20,"./util/sprite":21,"buzz":7,"crtrdg-gameloop":9,"crtrdg-keyboard":11,"crtrdg-mouse":13,"crtrdg-scene":14,"imagepreloader":15,"tic":17}],3:[function(require,module,exports){
+},{"./camera":1,"./map":3,"./npc":23,"./player":24,"./util/math":25,"./util/sprite":26,"buzz":7,"crtrdg-gameloop":10,"crtrdg-keyboard":13,"crtrdg-mouse":16,"crtrdg-scene":18,"imagepreloader":20,"tic":22}],3:[function(require,module,exports){
 var randomRGBA = require('./util/math').randomRGBA;
 
 module.exports = Map;
@@ -432,7 +432,7 @@ Map.prototype.draw = function(context, camera) {
   context.drawImage(this.image, 0, 0, this.image.width, this.image.height, -camera.position.x, -camera.position.y, this.image.width, this.image.height);
 };
 
-},{"./util/math":20}],4:[function(require,module,exports){
+},{"./util/math":25}],4:[function(require,module,exports){
 module.exports = AABB
 
 var vec2 = require('gl-matrix').vec2
@@ -4615,8 +4615,6 @@ Entity.prototype.addTo = function(game){
 
   if (!this.game.entities) this.game.entities = [];
 
-  console.log(this.game, this.game.entities)
-
   this.game.entities.push(this);
   this.game.findEntity = this.findEntity;
   this.initializeListeners();
@@ -4627,7 +4625,6 @@ Entity.prototype.addTo = function(game){
 
 Entity.prototype.initializeListeners = function(){
   var self = this;
-  
   this.findEntity(this, function(exists, entities, index){
     if (exists){
       self.game.on('update', function(interval){
@@ -4671,7 +4668,32 @@ Entity.prototype.findEntity = function(entity, callback){
   callback(exists, entities, index);
 };
 
-},{"events":6,"inherits":16}],9:[function(require,module,exports){
+},{"events":6,"inherits":9}],9:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],10:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var requestAnimationFrame = require('raf');
 var inherits = require('inherits');
@@ -4705,9 +4727,9 @@ function Game(options){
   if (options.maxListeners) this.setMaxListeners(options.maxListeners);
   else this.setMaxListeners(0);
 
-  window.addEventListener('load', function(){
-    self.start();
-  });
+  //window.addEventListener('load', function(){
+  //  self.start();
+  //});
 }
 
 Game.prototype.start = function(){
@@ -4748,7 +4770,9 @@ Game.prototype.draw = function(){
   this.emit('draw', this.context);
   this.emit('draw-foreground', this.context);
 };
-},{"events":6,"inherits":16,"raf":10}],10:[function(require,module,exports){
+},{"events":6,"inherits":11,"raf":12}],11:[function(require,module,exports){
+module.exports=require(9)
+},{}],12:[function(require,module,exports){
 module.exports = raf
 
 var EE = require('events').EventEmitter
@@ -4801,7 +4825,7 @@ raf.polyfill = _raf
 raf.now = now
 
 
-},{"events":6}],11:[function(require,module,exports){
+},{"events":6}],13:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 var vkey = require('vkey');
@@ -4832,7 +4856,9 @@ Keyboard.prototype.initializeListeners = function(){
     delete self.keysDown[vkey[e.keyCode]];
   }, false);
 };
-},{"events":6,"inherits":16,"vkey":12}],12:[function(require,module,exports){
+},{"events":6,"inherits":14,"vkey":15}],14:[function(require,module,exports){
+module.exports=require(9)
+},{}],15:[function(require,module,exports){
 var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
   , isOSX = /OS X/.test(ua)
   , isOpera = /Opera/.test(ua)
@@ -4970,7 +4996,7 @@ for(i = 112; i < 136; ++i) {
   output[i] = 'F'+(i-111)
 }
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -5037,7 +5063,9 @@ Mouse.prototype.calculateOffset = function(e, callback){
   callback(location);
 }
 
-},{"events":6,"inherits":16}],14:[function(require,module,exports){
+},{"events":6,"inherits":17}],17:[function(require,module,exports){
+module.exports=require(9)
+},{}],18:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -5102,7 +5130,9 @@ Scene.prototype.draw = function(context){
   this.emit('draw', context);
 };
 
-},{"events":6,"inherits":16}],15:[function(require,module,exports){
+},{"events":6,"inherits":19}],19:[function(require,module,exports){
+module.exports=require(9)
+},{}],20:[function(require,module,exports){
 ;(function (exports) {
     var ImageSet = function(params) {
         if (params === undefined) 
@@ -5159,32 +5189,9 @@ Scene.prototype.draw = function(context){
     }
 })(typeof exports === 'undefined' ?  this : exports)
 
-},{}],16:[function(require,module,exports){
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-},{}],17:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
+module.exports=require(9)
+},{}],22:[function(require,module,exports){
 /*
  * tic
  * https://github.com/shama/tic
@@ -5231,7 +5238,7 @@ Tic.prototype.tick = function(dt) {
   });
 };
 
-},{}],18:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
@@ -5428,7 +5435,7 @@ NPC.prototype.touches = function(entity){
 NPC.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
-},{"./util/math":20,"aabb-2d":4,"crtrdg-entity":8,"inherits":16}],19:[function(require,module,exports){
+},{"./util/math":25,"aabb-2d":4,"crtrdg-entity":8,"inherits":21}],24:[function(require,module,exports){
 var inherits = require('inherits');
 var Entity = require('crtrdg-entity');
 var aabb = require('aabb-2d');
@@ -5535,7 +5542,7 @@ Player.prototype.touches = function(entity){
 Player.prototype.setBoundingBox = function(){
   this.boundingBox = aabb([this.position.x, this.position.y], [this.size.x, this.size.y]);  
 };
-},{"aabb-2d":4,"crtrdg-entity":8,"inherits":16}],20:[function(require,module,exports){
+},{"aabb-2d":4,"crtrdg-entity":8,"inherits":21}],25:[function(require,module,exports){
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -5571,7 +5578,7 @@ module.exports = {
   randomGray: randomGray,
   randomGrayAlpha: randomGray
 };
-},{}],21:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var tic = require('tic')();
 
 module.exports = Sprite;
@@ -5627,4 +5634,4 @@ Sprite.prototype.draw = function(context){
   );
 };
 
-},{"tic":17}]},{},[2])
+},{"tic":22}]},{},[2])
