@@ -5,7 +5,7 @@ HouseOGames (4th Edition) hack meet-up/gamejam at Reactor in Seattle, WA, March 
 "The Baby"
 
 ## The Team
- * <a href="https://github.com/suisea">sui sea</a>
+ * <a href="https://github.com/suisea">sui sea</a> (<a href="http://twitter.com/swayandsea"><i>twitter</i></a>)
  * <a href="https://github.com/sethvincent">Seth Vincent</a>
  * <a href="https://github.com/kirkkohler">Kirk Kohler</a>
 
