@@ -1,5 +1,4 @@
 # HouseOGames 4
-===============
 HouseOGames (4th Edition) hack meet-up/gamejam at Reactor in Seattle, WA, March 2014.
 
 ## Theme
